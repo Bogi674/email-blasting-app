@@ -1,0 +1,25 @@
+# Netlify configuration
+# Docs: https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # The site is plain static files at the repo root — no build step.
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  # Bundle function dependencies with esbuild.
+  node_bundler = "esbuild"
+
+# Keep config.js from being cached aggressively so credential changes apply.
+[[headers]]
+  for = "/config.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+# Sensible security headers for the app shell.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
